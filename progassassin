@@ -1,0 +1,103 @@
+#!/bin/bash
+
+# ProgAssassin
+#
+# Launches and then, after a specified number of minutes, closes the
+# Icecat browser to help keep one's self from wasting all day on a well
+# known social media site with two billion users.
+#
+# Note : Be sure to set "browser.tabs.warnOnClose" to "false" in
+#        Icecat's about:config to insure that closure isn't blocked.
+#
+#
+# License : MIT License
+#
+#   Copyright 2018 David Yockey
+#
+#   Permission is hereby granted, free of charge, to any person
+#   obtaining a copy of this software and associated documentation files
+#   (the "Software"), to deal in the Software without restriction,
+#   including without limitation the rights to use, copy, modify, merge,
+#   publish, distribute, sublicense, and/or sell copies of the Software,
+#   and to permit persons to whom the Software is furnished to do so,
+#   subject to the following conditions:
+#
+#   The above copyright notice and this permission notice shall be
+#   included in all copies or substantial portions of the Software.
+#
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+#   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+#   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+#   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#   SOFTWARE.
+
+# Uncomment the following line and change the path to a desired sound to play the sound at browser launch.
+paplay -p $HOME/System/Sounds/Gauntlet/coin.wav
+
+# Icecat, a fork of Firefox, is used to facilitate unambiguous
+# identification of the target window to be closed where Firefox is used
+# for other web viewing. A different browser can be used for the purpose
+# at the user's discretion.
+icecat http://www.facebook.com &
+sleep 5
+
+proc="icecat"
+proctext="GNU Icecat"
+timeout=$1
+appname="ProgAssassin :"
+msgtime=(10 5 3 2 1)
+zzztime=(300 120 60 60 60)
+index=0;
+
+function timemsg()
+{
+	s="s"
+	if [ "$1" -le 1 ]
+		then
+			s=""
+	fi
+	
+	zenity --notification --text="$appname $proc has $1 minute$s remaining" --timeout=5
+}
+
+zenity --notification --text="$appname Contracted to liquidate $proc in $timeout minutes" --timeout=5
+
+
+case "$timeout" in
+	10)
+		sleep ${zzztime[0]}
+		;;
+	5)
+		sleep ${zzztime[1]}
+		;;
+	3|2)
+		sleep ${zzztime[2]}
+		;;
+	1)
+		;;
+	*)
+		sleep $((timeout-10))m
+		;;
+esac
+
+while [ "$index" -ne 4 ]
+	do
+		mtime=${msgtime[$index]}
+		if [ "$timeout" -gt "$mtime" ]
+			then
+				timemsg $mtime
+				sleep ${zzztime[$index]}
+		fi
+		((index +=1))
+	done
+
+timemsg ${msgtime[$index]}
+sleep ${zzztime[$index]}
+
+wmctrl -c "$proctext"
+# Uncomment the following line and change the path to a desired sound to play the sound at browser close.
+paplay -p $HOME/System/Sounds/Gauntlet/exit.wav
+zenity --notification --text="$appname $proc liquidated" --timeout=5
