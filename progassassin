@@ -35,7 +35,7 @@
 #   SOFTWARE.
 
 # Uncomment the following line and change the path to a desired sound to play the sound at browser launch.
-paplay -p $HOME/System/Sounds/Gauntlet/coin.wav
+#paplay -p $HOME/System/Sounds/Gauntlet/coin.wav
 
 # Icecat, a fork of Firefox, is used to facilitate unambiguous
 # identification of the target window to be closed where Firefox is used
@@ -99,5 +99,5 @@ sleep ${zzztime[$index]}
 
 wmctrl -c "$proctext"
 # Uncomment the following line and change the path to a desired sound to play the sound at browser close.
-paplay -p $HOME/System/Sounds/Gauntlet/exit.wav
+#paplay -p $HOME/System/Sounds/Gauntlet/exit.wav
 zenity --notification --text="$appname $proc liquidated" --timeout=5
