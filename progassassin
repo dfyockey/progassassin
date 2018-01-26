@@ -6,6 +6,8 @@
 # Icecat browser to help keep one's self from wasting all day on a well
 # known social media site with two billion users.
 #
+# Usage : progassassin <number_of_minutes>
+#
 # Note : Be sure to set "browser.tabs.warnOnClose" to "false" in
 #        Icecat's about:config to insure that closure isn't blocked.
 #
